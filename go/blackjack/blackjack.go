@@ -38,11 +38,11 @@ func FirstTurn(card1, card2, dealerCard string) string {
 	first_turn := ""
 
 	switch{
-	case hand_val == 22:
+	case card1 == "ace" && card2 == "ace":
 		first_turn += "P"
-	case hand_val == 21 && dealerCard_val != 11 || dealerCard_val != 10:
+	case hand_val == 21 && dealerCard_val != 11 && dealerCard_val != 10:
 		first_turn += "W"
-	case hand_val == 21 && dealerCard_val <= 11 && dealerCard_val >= 10:
+	case hand_val == 21 && dealerCard_val <= 11:
 		first_turn += "S"
 	case hand_val >= 17 && hand_val <= 20:
 		first_turn += "S"
