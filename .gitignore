@@ -1,2 +1,8 @@
 .vscode
 .exercism
+csharp/interest-is-interesting/bin
+csharp/interest-is-interesting/obj
+csharp/log-levels/bin
+csharp/log-levels/obj
+csharp/roll-the-die/bin
+csharp/roll-the-die/obj
