@@ -5,35 +5,30 @@ public static class TelemetryBuffer
 {
     public static byte[] ToBuffer(long reading)
     {
-        byte[] byteArray;
-        
-        switch (reading)
+        var bytes = reading switch
         {
-            case > int.MaxValue and <= uint.MaxValue:
-                byteArray = BitConverter.GetBytes((uint)reading).Prepend((byte)(2)).ToArray();
-                break;
-            case > ushort.MaxValue and <= int.MaxValue:
-                byteArray = BitConverter.GetBytes((int)reading).Prepend((byte)(256 - 2)).ToArray();
-                break;
-            case >= ushort.MinValue and <= ushort.MaxValue:
-                byteArray = BitConverter.GetBytes((ushort)reading).Prepend((byte)(2)).ToArray();
-                break;
-            case >= short.MinValue and < ushort.MinValue:
-                byteArray = BitConverter.GetBytes((short)reading).Prepend((byte)(256 - 2)).ToArray();
-                break;
-            case >= int.MinValue and < short.MinValue:
-                byteArray = BitConverter.GetBytes((int)reading).Prepend((byte)(256 - 4)).ToArray();
-                break;
-            default:
-                byteArray = BitConverter.GetBytes(reading).Prepend((byte)(256 - 2)).ToArray();
-                break;
-        }
+            < int.MinValue => BitConverter.GetBytes((long)reading).Prepend((byte)(256 - 8)),
+            < short.MinValue => BitConverter.GetBytes((int)reading).Prepend((byte)(256 - 4)),
+            < ushort.MinValue => BitConverter.GetBytes((short)reading).Prepend((byte)(256 - 2)),
+            <= ushort.MaxValue => BitConverter.GetBytes((ushort)reading).Prepend((byte)2),
+            <= int.MaxValue => BitConverter.GetBytes((int)reading).Prepend((byte)(256 - 4)),
+            <= uint.MaxValue => BitConverter.GetBytes((uint)reading).Prepend((byte)4),  
+            _ => BitConverter.GetBytes((long)reading).Prepend((byte)(256 - 8))
+        };
 
-        return byteArray;
+        return bytes.Concat(new byte[9 - bytes.Count()]).ToArray();
     }
 
     public static long FromBuffer(byte[] buffer)
     {
-        return BitConverter.ToInt64(buffer);
+        var number = buffer[0] switch
+        {
+            256 - 8 or 4 or 2 => BitConverter.ToInt64(buffer, 1),
+            256 - 4 => BitConverter.ToInt32(buffer, 1),
+            256 - 2 => BitConverter.ToInt16(buffer, 1),
+            _ => 0 
+        };
+
+        return number;
     }
 }
