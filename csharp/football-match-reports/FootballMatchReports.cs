@@ -4,49 +4,68 @@ public static class PlayAnalyzer
 {
     public static string AnalyzeOnField(int shirtNum)
     {
+        string position;
         switch (shirtNum)
         {
             case 1:
-                return "goalie";
+                position = "goalie";
+                break;
             case 2:
-                return "left back";
-            case 3: 
+                position = "left back";
+                break;
+            case 3:
             case 4:
-                return "center back";
+                position = "center back";
+                break;
             case 5:
-                return "right back";
+                position = "right back";
+                break;
             case 6:
             case 7:
             case 8:
-                return "midfielder";
+                position = "midfielder";
+                break;
             case 9:
-                return "left wing";
+                position = "left wing";
+                break;
             case 10:
-                return "striker";
+                position = "striker";
+                break;
             case 11:
-                return "right wing";
+                position = "right wing";
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        return position;
     }
 
     public static string AnalyzeOffField(object report)
     {
-        if (report.GetType() == typeof(int))
+        string reportDisplayed;
+        switch (report)
         {
-            return $"There are {report} supporters at the match.";
+            case int supporters:
+                reportDisplayed = $"There are {supporters} supporters at the match.";
+                break;
+            case string announcement:
+                reportDisplayed = announcement;
+                break;
+            case Injury injury:
+                reportDisplayed = $"Oh no! {injury.GetDescription()} Medics are on the field.";
+                break;
+            case Incident incident:
+                reportDisplayed = $"{incident.GetDescription()}";
+                break;
+            case Manager manager when manager.Club is null:
+                reportDisplayed = $"{manager.Name}";
+                break;
+            case Manager manager when manager.Club is not null:
+                reportDisplayed = $"{manager.Name} ({manager.Club})";
+                break;
+            default:
+                throw new ArgumentException();
         }
-        else if (report.GetType() == typeof(string))
-        {
-            return (string)report;
-        }
-        else if (report.GetType() == typeof(Injury))
-        {
-            return $"Oh no! Player {report} is injured. Medics are on the field.";
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
+        return reportDisplayed;
     }
 }
