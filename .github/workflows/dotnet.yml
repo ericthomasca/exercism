@@ -6,8 +6,12 @@ name: C# Hello World
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - csharp/hello-world/**
   pull_request:
     branches: [ "main" ]
+    paths:
+      - csharp/hello-world/**
 
 jobs:
   build:
