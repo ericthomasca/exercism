@@ -1,5 +1,7 @@
 # Hello World
 
+[![C# Hello World](https://github.com/ericthomasca/exercism/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ericthomasca/exercism/actions/workflows/dotnet.yml)
+
 Welcome to Hello World on Exercism's C# Track.
 If you need help running the tests or submitting your code, check out `HELP.md`.
 
