@@ -44,12 +44,17 @@ public static class TestTrack
 {
     public static void Race(IRemoteControlCar car)
     {
-        throw new NotImplementedException($"Please implement the (static) TestTrack.Race() method");
+        car.Drive();
     }
 
     public static List<ProductionRemoteControlCar> GetRankedCars(ProductionRemoteControlCar prc1,
         ProductionRemoteControlCar prc2)
     {
-        throw new NotImplementedException($"Please implement the (static) TestTrack.GetRankedCars() method");
+        return prc1.CompareTo(prc2) switch 
+        {
+            > 0 => new List<ProductionRemoteControlCar> { prc2, prc1 },
+            _ => new List<ProductionRemoteControlCar> { prc2, prc1 }
+        };
+        
     }
 }
