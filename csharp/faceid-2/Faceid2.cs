@@ -38,6 +38,7 @@ public class Identity
 public class Authenticator
 {
     public Dictionary<int, Identity> registered = new Dictionary<int, Identity>(); 
+    
     public static bool AreSameFace(FacialFeatures faceA, FacialFeatures faceB) => faceA.Equals(faceB);
 
     public bool IsAdmin(Identity identity) => identity.Email.Equals("admin@exerc.ism")
