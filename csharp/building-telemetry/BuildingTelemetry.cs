@@ -22,7 +22,7 @@ public class RemoteControlCar
         this.sponsors = sponsors ?? Array.Empty<string>();
     }
 
-    public string DisplaySponsor(int sponsorNum) 
+    public string DisplaySponsor(int sponsorNum)
         => this.sponsors[sponsorNum];
 
     public bool GetTelemetryData(ref int serialNum,
@@ -31,8 +31,8 @@ public class RemoteControlCar
         if (serialNum > this.latestSerialNum)
         {
             this.latestSerialNum = serialNum;
-            batteryPercentage = 80;
-            distanceDrivenInMeters = 4;
+            batteryPercentage = this.batteryPercentage;
+            distanceDrivenInMeters = this.distanceDrivenInMeters;
             return true;
         }
         else
@@ -59,15 +59,15 @@ public class TelemetryClient
 
     public string GetBatteryUsagePerMeter(int serialNum)
     {
-        bool telemetryData = car.GetTelemetryData(ref serialNum, out int batteryPercentage, out int distanceDrivenInMeters);
-        if (telemetryData || (batteryPercentage == 100 && distanceDrivenInMeters == 0))
-        {
-            return "no data";
-        }
-        else
+        bool telemetryData = this.car.GetTelemetryData(ref serialNum, out int batteryPercentage, out int distanceDrivenInMeters);
+        if (telemetryData && distanceDrivenInMeters > 0)
         {
             var usagePerMeter = (100 - batteryPercentage) / distanceDrivenInMeters;
             return $"usage-per-meter={usagePerMeter}";
+        }
+        else
+        {
+            return "no data";
         }
     }
 
